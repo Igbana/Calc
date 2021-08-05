@@ -1,0 +1,12 @@
+winGeometry = "1000x1000+0+0"
+dgtBtnwidth = 4
+dgtBtnheight = 2
+btnBrdWidth = 1
+framePadx = 10
+framePady = 10
+dispBrdWidth = 30
+dispWidth = 29
+dispPadx = 15
+dispPady = 15
+dispInnerPadx = 5
+dispInnerPady = 5
