@@ -1,10 +1,11 @@
 from tkinter import Frame, Entry, Button
 from tkinter.constants import DISABLED, FLAT, RIGHT
-from ..props import fonts, dimensions, colors
-from ...controller.controller import Controller
+from views.props import fonts, dimensions, colors
+from controller.controller import Controller
 
 class MainScreen(Frame):
     def __init__(self, root):
+        self.backend = Controller()
         super().__init__(root, padx=dimensions.framePadx, pady=dimensions.framePady)
         self.dspFrame = Frame(self)
         self.trgFrame = Frame(self, padx=dimensions.framePadx, pady=dimensions.framePady)
@@ -29,6 +30,24 @@ class MainScreen(Frame):
             ['e^' ,'MOD','1/x','√']]
 
         self.opers = '+-x/'
+
+        self.disp = Entry(
+            self.dspFrame,
+            borderwidth=dimensions.dispBrdWidth,
+            border=dimensions.dispBrdWidth,
+            width=dimensions.dispWidth,
+            relief=FLAT,
+            bg=colors.dispBg,
+            justify=RIGHT,
+            font=fonts.dispFont)
+
+        self.disp.insert(0, "0")
+
+        self.disp.grid(
+            padx=dimensions.dispPadx,
+            ipadx=dimensions.dispInnerPadx,
+            pady=dimensions.dispPady,
+            ipady=dimensions.dispInnerPady)
 
         for i in self.mthBtnLst:
             for j in i:
@@ -56,6 +75,22 @@ class MainScreen(Frame):
                     self.bg = colors.lightGrey
                 if j == '':
                     pass
+                elif j == '=':
+                    Button(
+                        self.mthFrame,
+                        text = j,
+                        font=fonts.btnFont,
+                        borderwidth=dimensions.btnBrdWidth,
+                        height=self.btnHt, width=self.btnWd,
+                        fg= self.fg,
+                        bg= self.bg,
+                        command=lambda x=j: self.backend.solve(self.disp)
+                        ).grid(
+                            row= self.mthBtnLst.index(i),
+                            column=i.index(j),
+                            rowspan=self.rowspan,
+                            columnspan=self.colspan
+                            )
                 else:
                     Button(
                         self.mthFrame,
@@ -64,7 +99,8 @@ class MainScreen(Frame):
                         borderwidth=dimensions.btnBrdWidth,
                         height=self.btnHt, width=self.btnWd,
                         fg= self.fg,
-                        bg= self.bg
+                        bg= self.bg,
+                        command=lambda x=j: self.backend.appendVal(self.disp, x)
                         ).grid(
                             row= self.mthBtnLst.index(i),
                             column=i.index(j),
@@ -99,21 +135,3 @@ class MainScreen(Frame):
                             rowspan=self.rowspan,
                             columnspan=self.colspan
                             )
-
-        self.disp = Entry(
-            self.dspFrame,
-            borderwidth=dimensions.dispBrdWidth,
-            border=dimensions.dispBrdWidth,
-            width=dimensions.dispWidth,
-            relief=FLAT,
-            bg=colors.dispBg,
-            justify=RIGHT,
-            font=fonts.dispFont)
-
-        self.disp.insert(0, "0")
-
-        self.disp.grid(
-            padx=dimensions.dispPadx,
-            ipadx=dimensions.dispInnerPadx,
-            pady=dimensions.dispPady,
-            ipady=dimensions.dispInnerPady)
