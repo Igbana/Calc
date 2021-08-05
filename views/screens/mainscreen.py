@@ -1,6 +1,7 @@
 from tkinter import Frame, Entry, Button
 from tkinter.constants import DISABLED, FLAT, RIGHT
 from ..props import fonts, dimensions, colors
+from ...controller.controller import Controller
 
 class MainScreen(Frame):
     def __init__(self, root):
@@ -108,6 +109,8 @@ class MainScreen(Frame):
             bg=colors.dispBg,
             justify=RIGHT,
             font=fonts.dispFont)
+
+        self.disp.insert(0, "0")
 
         self.disp.grid(
             padx=dimensions.dispPadx,
