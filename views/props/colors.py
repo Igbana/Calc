@@ -1,0 +1,8 @@
+darkGrey = '#8C8C8C'
+lightGrey = '#AAAAAA'
+black = '#474747'
+red = '#F25652'
+blue = '#4F5F6A'
+active = '#A8A8A8'
+white = '#E8E8E8'
+dispBg = '#3E4E59'
