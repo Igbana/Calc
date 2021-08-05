@@ -82,8 +82,8 @@ class MainScreen(Frame):
                         font=fonts.btnFont,
                         borderwidth=dimensions.btnBrdWidth,
                         height=self.btnHt, width=self.btnWd,
-                        fg= self.fg,
-                        bg= self.bg,
+                        fg= colors.white,
+                        bg= colors.dispBg,
                         command=lambda x=j: self.backend.solve(self.disp)
                         ).grid(
                             row= self.mthBtnLst.index(i),
