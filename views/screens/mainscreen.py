@@ -15,22 +15,6 @@ class MainScreen(Frame):
         self.trgFrame.grid(row=1, column=0)
         self.mthFrame.grid(row=1, column=1)
 
-        self.mthBtnLst = [
-            ['7','8','9','/'],
-            ['4','5','6','x'],
-            ['1','2','3','-'],
-            ['.','0','' ,'+'],
-            ['(',')','=','' ]]
-
-        self.trgBtnLst = [
-            [ 'C' ,'DEL',''   ,'' ],
-            ['nPr','nCr','PI' ,'^'],
-            ['sin','cos','tan','%'],
-            ['ln' ,'log', 'E' ,'!'],
-            ['e^' ,'MOD','1/x','√']]
-
-        self.opers = '+-x/'
-
         self.disp = Entry(
             self.dspFrame,
             borderwidth=dimensions.dispBrdWidth,
@@ -49,6 +33,29 @@ class MainScreen(Frame):
             pady=dimensions.dispPady,
             ipady=dimensions.dispInnerPady)
 
+
+        self.mthBtnLst = [
+            ['7','8','9','/'],
+            ['4','5','6','x'],
+            ['1','2','3','-'],
+            ['.','0','' ,'+'],
+            ['(',')','=','' ]]
+
+        self.trgBtnLst = [
+            [ 'C' ,'DEL', '←' ,'→'],
+            ['nPr','nCr','PI' ,'^'],
+            ['sin','cos','tan','%'],
+            ['ln' ,'log', 'E' ,'!'],
+            ['e^' ,'MOD','1/x','√']]
+
+        self.opers = '+-x/'
+        self.cmdBtns = {
+            'C': lambda x='':self.backend.clearAll(self.disp),
+            '←': lambda x='':self.backend.curLeft(self.disp),
+            '→': lambda x='':self.backend.curRight(self.disp),
+            'DEL': lambda x='':self.backend.delVal(self.disp),
+            '=': lambda x='':self.backend.solve(self.disp)}
+        
         for i in self.mthBtnLst:
             for j in i:
                 if j == '+':
@@ -75,24 +82,8 @@ class MainScreen(Frame):
                     self.bg = colors.lightGrey
                 if j == '':
                     pass
-                elif j == '=':
-                    Button(
-                        self.mthFrame,
-                        text = j,
-                        font=fonts.btnFont,
-                        borderwidth=dimensions.btnBrdWidth,
-                        height=self.btnHt, width=self.btnWd,
-                        fg= colors.white,
-                        bg= colors.dispBg,
-                        command=lambda x=j: self.backend.solve(self.disp)
-                        ).grid(
-                            row= self.mthBtnLst.index(i),
-                            column=i.index(j),
-                            rowspan=self.rowspan,
-                            columnspan=self.colspan
-                            )
                 else:
-                    Button(
+                    self.mthBtn = Button(
                         self.mthFrame,
                         text = j,
                         font=fonts.btnFont,
@@ -101,18 +92,23 @@ class MainScreen(Frame):
                         fg= self.fg,
                         bg= self.bg,
                         command=lambda x=j: self.backend.appendVal(self.disp, x)
-                        ).grid(
-                            row= self.mthBtnLst.index(i),
-                            column=i.index(j),
-                            rowspan=self.rowspan,
-                            columnspan=self.colspan
-                            )
+                        )
+                    self.mthBtn.grid(
+                        row= self.mthBtnLst.index(i),
+                        column=i.index(j),
+                        rowspan=self.rowspan,
+                        columnspan=self.colspan
+                        )
+                if j in self.cmdBtns:
+                    print(self.cmdBtns[j])
+                    self.mthBtn.config(command=self.cmdBtns[j], bg = colors.dispBg, fg = colors.white)
+
 
         for i in self.trgBtnLst:
             for j in i:
                 self.btnWd = dimensions.dgtBtnwidth
                 self.btnHt = dimensions.dgtBtnheight
-                if j == 'C':
+                if j =='C':
                     self.bg = colors.pepper
                     self.fg = colors.white
                 else:
@@ -121,17 +117,22 @@ class MainScreen(Frame):
                 if j == '':
                     pass
                 else:
-                    Button(
+                    self.trgBtn = Button(
                         self.trgFrame,
                         text = j,
                         font=fonts.btnFont,
                         borderwidth=dimensions.btnBrdWidth,
                         height=self.btnHt, width=self.btnWd,
                         fg= self.fg,
-                        bg= self.bg
-                        ).grid(
-                            row= self.trgBtnLst.index(i),
-                            column=i.index(j),
-                            rowspan=self.rowspan,
-                            columnspan=self.colspan
-                            )
+                        bg= self.bg,
+                        command=lambda x=j: self.backend.appendVal(self.disp)
+                        )
+                    self.trgBtn.grid(
+                        row= self.trgBtnLst.index(i),
+                        column=i.index(j),
+                        rowspan=self.rowspan,
+                        columnspan=self.colspan
+                        )
+                if j in self.cmdBtns:
+                    print(self.cmdBtns[j])
+                    self.trgBtn.config(command=self.cmdBtns[j])

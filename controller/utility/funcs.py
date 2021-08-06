@@ -6,3 +6,4 @@ class TrigFunctions:
 
 class UtilFunctions:
     pass
+
