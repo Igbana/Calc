@@ -37,7 +37,6 @@ class Controller:
     def solve(self, widget):
         self.widget = widget
         self.ques = self.widget.get()
-        self.ques = self.ques.replace('x', '*')
         for i in self.swaps:
             self.ques = self.ques.replace(i, self.swaps[i])
         try:
